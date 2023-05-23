@@ -3,7 +3,9 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
 // Creating cubes with Three.js
 (() => {
   let scene;
-  let box;
+  let person;
+  let head;
+  let body;
   let light;
   let ambient;
   let camera;
@@ -17,16 +19,20 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
 
   scene = new THREE.Scene()
 
-  box = new THREE.Mesh(
-    new THREE.BoxGeometry(50, 50, 50),
-    new THREE.MeshLambertMaterial({ color: new THREE.Color(0xff0000) })
+  head = new THREE.Mesh(
+    new THREE.BoxGeometry(20, 20, 20),
+    new THREE.MeshLambertMaterial({ color: 0xff0000 })
   );
-  box.position.x = 50;
-  box.position.y = 0;
-  box.position.z = 0;
-  box.scale.x = 2;
-  box.rotation.set(70 * Math.PI / 180, 0, 0);
-  scene.add(box);
+  head.position.set(0, 40, 0);
+  body = new THREE.Mesh(
+    new THREE.BoxGeometry(40, 60, 40),
+    new THREE.MeshLambertMaterial({ color: 0xff0000 })
+  );
+  body.position.set(0, 0, 0);
+  person = new THREE.Group();
+  person.add(head);
+  person.add(body);
+  scene.add(person);
 
   light = new THREE.DirectionalLight(0xffffff, 1);
   light.position.set(0, 100, 30);
@@ -55,6 +61,7 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
   const render = () => {
     requestAnimationFrame(render);
 
+    person.rotation.y += 0.01;
     renderer.render(scene, camera);
   };
   render();
