@@ -36,7 +36,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   camera.position.set(200, 100, 300);
   camera.lookAt(scene.position);
 
-  gridHelper = new THREE.GridHelper(200);
+  gridHelper = new THREE.GridHelper(350, 20);
   scene.add(gridHelper);
   axesHelper = new THREE.AxesHelper(1000);
   scene.add(axesHelper);
