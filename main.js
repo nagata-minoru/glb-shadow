@@ -5,7 +5,10 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 (() => {
   let scene;
   let box;
-  let sphere;
+  let sphere1;
+  let sphere2;
+  let sphere3;
+  let sphere4;
   let plane;
   let light;
   let ambient;
@@ -27,12 +30,33 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   box.position.set(0, 0, 0);
   scene.add(box);
 
-  sphere = new THREE.Mesh(
+  sphere1 = new THREE.Mesh(
+    new THREE.SphereGeometry(50),
+    new THREE.MeshBasicMaterial({ color: 0x4caf50 })
+  );
+  sphere1.position.set(100, 0, -150);
+  scene.add(sphere1);
+
+  sphere2 = new THREE.Mesh(
     new THREE.SphereGeometry(50),
     new THREE.MeshLambertMaterial({ color: 0x4caf50 })
   );
-  sphere.position.set(100, 0, 0);
-  scene.add(sphere);
+  sphere2.position.set(100, 0, 0);
+  scene.add(sphere2);
+
+  sphere3 = new THREE.Mesh(
+    new THREE.SphereGeometry(50),
+    new THREE.MeshPhongMaterial({ color: 0x4caf50, shininess: 80})
+  );
+  sphere3.position.set(100, 0, 150);
+  scene.add(sphere3);
+
+  sphere4 = new THREE.Mesh(
+    new THREE.SphereGeometry(50),
+    new THREE.MeshLambertMaterial({ color: 0x4caf50, wireframe: true })
+  );
+  sphere4.position.set(-100, 0, 0);
+  scene.add(sphere4);
 
   plane = new THREE.Mesh(
     new THREE.PlaneGeometry(200, 200),
@@ -53,7 +77,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   camera.position.set(200, 100, 300);
   camera.lookAt(scene.position);
 
-  gridHelper = new THREE.GridHelper(350, 20);
+  gridHelper = new THREE.GridHelper(450, 20);
   scene.add(gridHelper);
   axesHelper = new THREE.AxesHelper(1000);
   scene.add(axesHelper);
