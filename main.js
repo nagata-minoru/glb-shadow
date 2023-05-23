@@ -13,6 +13,7 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
   let renderer;
   const width = 500;
   const height = 500;
+  let theta = 0;
 
   scene = new THREE.Scene()
 
@@ -47,5 +48,16 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
   renderer.setPixelRatio(window.devicePixelRatio);
   stage.appendChild(renderer.domElement);
 
-  renderer.render(scene, camera);
+  const render = () => {
+    requestAnimationFrame(render);
+
+    theta += 0.1;
+    camera.position.x = 300 * Math.cos(THREE.MathUtils.degToRad(theta));
+    camera.position.z = 300 * Math.sin(THREE.MathUtils.degToRad(theta));
+    camera.lookAt(scene.position);
+
+    box.rotation.y += 0.001;
+    renderer.render(scene, camera);
+  };
+  render();
 })();
