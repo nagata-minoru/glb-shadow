@@ -5,6 +5,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 (() => {
   let scene;
   let box;
+  let sphere;
+  let plane;
   let light;
   let ambient;
   let camera;
@@ -24,6 +26,21 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   );
   box.position.set(0, 0, 0);
   scene.add(box);
+
+  sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(50),
+    new THREE.MeshLambertMaterial({ color: 0x4caf50 })
+  );
+  sphere.position.set(100, 0, 0);
+  scene.add(sphere);
+
+  plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(200, 200),
+    new THREE.MeshLambertMaterial({ color: 0x0096d6, side: THREE.DoubleSide })
+  );
+  plane.position.set(0, -50, 0);
+  plane.rotation.x = -0.5 * Math.PI;
+  scene.add(plane);
 
   light = new THREE.DirectionalLight(0xffffff, 1);
   light.position.set(0, 100, 30);
