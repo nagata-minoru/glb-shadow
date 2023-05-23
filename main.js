@@ -21,7 +21,11 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
     new THREE.BoxGeometry(50, 50, 50),
     new THREE.MeshLambertMaterial({ color: new THREE.Color(0xff0000) })
   );
-  box.position.set(0, 0, 0);
+  box.position.x = 50;
+  box.position.y = 0;
+  box.position.z = 0;
+  box.scale.x = 2;
+  box.rotation.set(70 * Math.PI / 180, 0, 0);
   scene.add(box);
 
   light = new THREE.DirectionalLight(0xffffff, 1);
