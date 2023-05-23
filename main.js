@@ -51,12 +51,6 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
   const render = () => {
     requestAnimationFrame(render);
 
-    theta += 0.1;
-    camera.position.x = 300 * Math.cos(THREE.MathUtils.degToRad(theta));
-    camera.position.z = 300 * Math.sin(THREE.MathUtils.degToRad(theta));
-    camera.lookAt(scene.position);
-
-    box.rotation.y += 0.001;
     renderer.render(scene, camera);
   };
   render();
