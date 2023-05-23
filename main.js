@@ -1,11 +1,10 @@
 import * as THREE from 'three'; // Three.jsライブラリをインポートします。
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 // Creating cubes with Three.js
 (() => {
   let scene;
-  let person;
-  let head;
-  let body;
+  let box;
   let light;
   let ambient;
   let camera;
@@ -15,23 +14,16 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
   let renderer;
   const width = 500;
   const height = 500;
+  let controls;
 
   scene = new THREE.Scene()
 
-  head = new THREE.Mesh(
-    new THREE.BoxGeometry(20, 20, 20),
+  box = new THREE.Mesh(
+    new THREE.BoxGeometry(50, 50, 50),
     new THREE.MeshLambertMaterial({ color: 0xff0000 })
   );
-  head.position.set(0, 40, 0);
-  body = new THREE.Mesh(
-    new THREE.BoxGeometry(40, 60, 40),
-    new THREE.MeshLambertMaterial({ color: 0xff0000 })
-  );
-  body.position.set(0, 0, 0);
-  person = new THREE.Group();
-  person.add(head);
-  person.add(body);
-  scene.add(person);
+  box.position.set(0, 0, 0);
+  scene.add(box);
 
   light = new THREE.DirectionalLight(0xffffff, 1);
   light.position.set(0, 100, 30);
@@ -51,6 +43,9 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
   lightHelper = new THREE.DirectionalLightHelper(light, 20);
   scene.add(lightHelper);
 
+  controls = new OrbitControls(camera, stage);
+  controls.autoRotate = true;
+
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
   renderer.setClearColor(0xcfcfcf);
@@ -60,7 +55,8 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
   const render = () => {
     requestAnimationFrame(render);
 
-    person.rotation.y += 0.01;
+    controls.update();
+    box.rotation.y += 0.01;
     renderer.render(scene, camera);
   };
   render();
