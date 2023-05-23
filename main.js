@@ -15,7 +15,6 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
   let renderer;
   const width = 500;
   const height = 500;
-  let theta = 0;
 
   scene = new THREE.Scene()
 
