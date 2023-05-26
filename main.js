@@ -1,14 +1,10 @@
-import * as THREE from 'three'; // Three.jsライブラリをインポートします。
+import * as THREE from "three"; // Three.jsライブラリをインポートします。
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 // Creating cubes with Three.js
 (() => {
   let scene;
   let box;
-  let sphere1;
-  let sphere2;
-  let sphere3;
-  let sphere4;
   let plane;
   let light;
   let ambient;
@@ -20,43 +16,13 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   const width = 500;
   const height = 500;
   let controls;
+  let shadhowHelper;
 
-  scene = new THREE.Scene()
+  scene = new THREE.Scene();
 
-  box = new THREE.Mesh(
-    new THREE.BoxGeometry(50, 50, 50),
-    new THREE.MeshLambertMaterial({ color: 0xff0000 })
-  );
+  box = new THREE.Mesh(new THREE.BoxGeometry(50, 50, 50), new THREE.MeshLambertMaterial({ color: "red" }));
   box.position.set(0, 0, 0);
   scene.add(box);
-
-  sphere1 = new THREE.Mesh(
-    new THREE.SphereGeometry(50),
-    new THREE.MeshBasicMaterial({ color: 0x4caf50 })
-  );
-  sphere1.position.set(100, 0, -150);
-  scene.add(sphere1);
-
-  sphere2 = new THREE.Mesh(
-    new THREE.SphereGeometry(50),
-    new THREE.MeshLambertMaterial({ color: 0x4caf50 })
-  );
-  sphere2.position.set(100, 0, 0);
-  scene.add(sphere2);
-
-  sphere3 = new THREE.Mesh(
-    new THREE.SphereGeometry(50),
-    new THREE.MeshPhongMaterial({ color: 0x4caf50, shininess: 80})
-  );
-  sphere3.position.set(100, 0, 150);
-  scene.add(sphere3);
-
-  sphere4 = new THREE.Mesh(
-    new THREE.SphereGeometry(50),
-    new THREE.MeshLambertMaterial({ color: 0x4caf50, wireframe: true })
-  );
-  sphere4.position.set(-100, 0, 0);
-  scene.add(sphere4);
 
   plane = new THREE.Mesh(
     new THREE.PlaneGeometry(200, 200),
@@ -92,6 +58,17 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   renderer.setClearColor(0xcfcfcf);
   renderer.setPixelRatio(window.devicePixelRatio);
   stage.appendChild(renderer.domElement);
+
+  renderer.shadowMap.enabled = true;
+  light.castShadow = true;
+  light.shadow.camera.left = -200;
+  light.shadow.camera.right = 200;
+  light.shadow.camera.top = 200;
+  light.shadow.camera.bottom = -200;
+  shadhowHelper = new THREE.CameraHelper(light.shadow.camera);
+  scene.add(shadhowHelper);
+  box.castShadow = true;
+  plane.receiveShadow = true;
 
   const render = () => {
     requestAnimationFrame(render);
