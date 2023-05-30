@@ -1,10 +1,32 @@
 import * as THREE from "three"; // Three.jsライブラリをインポートします。
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
 
 // Creating cubes with Three.js
-(() => {
+(async () => {
+  /**
+   * モデルをロードします。
+   * @returns {Promise<THREE.Group>} ロードされたモデル。
+   */
+  const loadModel = async () => {
+    const loader = new GLTFLoader();
+    const model = await new Promise((resolve) =>
+      loader.load(
+        "./ennchuBaoundingBox.glb",
+        (object) => resolve(object.scene),
+        undefined,
+        (error) => console.log(error)
+      )
+    );
+    model.traverse(node => {
+      node.castShadow = true;
+      node.receiveShadow = true;
+    });
+    model.scale.set(50, 50, 50);
+    return model;
+  };
+
   let scene;
-  let box;
   let plane;
   let light;
   let ambient;
@@ -20,20 +42,19 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
   scene = new THREE.Scene();
 
-  box = new THREE.Mesh(new THREE.BoxGeometry(50, 50, 50), new THREE.MeshLambertMaterial({ color: "red" }));
-  box.position.set(0, 0, 0);
-  scene.add(box);
-
   plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(200, 200),
+    new THREE.PlaneGeometry(400, 400),
     new THREE.MeshLambertMaterial({ color: 0x0096d6, side: THREE.DoubleSide })
   );
-  plane.position.set(0, -50, 0);
+  plane.position.set(0, -0.1, 0);
   plane.rotation.x = -0.5 * Math.PI;
   scene.add(plane);
 
+  const loadedModel = await loadModel();
+  scene.add(loadedModel);
+
   light = new THREE.DirectionalLight(0xffffff, 1);
-  light.position.set(0, 100, 30);
+  light.position.set(0, 50, 100);
   scene.add(light);
 
   ambient = new THREE.AmbientLight(0x404040, 0.9);
@@ -67,14 +88,13 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   light.shadow.camera.bottom = -200;
   shadhowHelper = new THREE.CameraHelper(light.shadow.camera);
   scene.add(shadhowHelper);
-  box.castShadow = true;
   plane.receiveShadow = true;
 
   const render = () => {
     requestAnimationFrame(render);
 
     controls.update();
-    box.rotation.y += 0.01;
+    loadedModel.rotation.y += 0.01;
     renderer.render(scene, camera);
   };
   render();
