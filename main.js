@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 (async () => {
   const loadModel = async () => {
@@ -23,7 +25,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
 
   const scene = new THREE.Scene();
   const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(400, 400),
+    new THREE.PlaneGeometry(300, 300),
     new THREE.MeshLambertMaterial({ color: 0x0096d6, side: THREE.DoubleSide })
   );
   plane.position.set(0, -0.1, 0);
@@ -33,8 +35,25 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
   const loadedModel = await loadModel();
   scene.add(loadedModel);
 
+  const font = await new Promise((resolve) =>
+    new FontLoader().load("assets/optimer_regular.typeface.json", (font) => resolve(font))
+  );
+
+  const text = new THREE.Mesh(
+    new TextGeometry("GLB-SAMPLE", {
+      font: font,
+      size: 30,
+      height: 5,
+    }),
+    new THREE.MeshLambertMaterial({ color: 0xf39800 })
+  );
+  text.position.set(0, 90, 0);
+  text.geometry.center();
+  text.castShadow = true;
+  scene.add(text);
+
   const light = new THREE.DirectionalLight(0xffffff, 1);
-  light.position.set(0, 50, 100);
+  light.position.set(0, 120, 80);
   scene.add(light);
 
   const ambient = new THREE.AmbientLight(0x404040, 0.9);
@@ -52,7 +71,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
   scene.add(lightHelper);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(500, 500);
+  renderer.setSize(1000, 1000);
   renderer.setClearColor(0xcfcfcf);
   renderer.setPixelRatio(window.devicePixelRatio);
   stage.appendChild(renderer.domElement);
@@ -67,7 +86,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
   light.shadow.camera.top = 200;
   light.shadow.camera.bottom = -200;
   const shadowHelper = new THREE.CameraHelper(light.shadow.camera);
-  scene.add(shadowHelper);
+  // scene.add(shadowHelper);
   plane.receiveShadow = true;
 
   const render = () => {
