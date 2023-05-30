@@ -73,7 +73,9 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
   const render = () => {
     requestAnimationFrame(render);
     controls.update();
+    loadedModel.rotation.x += 0.01;
     loadedModel.rotation.y += 0.01;
+    loadedModel.rotation.z += 0.01;
     renderer.render(scene, camera);
   };
   render();
